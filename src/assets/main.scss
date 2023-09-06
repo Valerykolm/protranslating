@@ -1,0 +1,59 @@
+.table_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  border-radius: 10px;
+  padding: 4px 15px;
+  background: linear-gradient(white, #c8c8c8);
+}
+
+caption {
+  background-color: rgb(240, 246, 246);
+  border: 1px solid rgb(202, 200, 200);
+  padding: 10px;
+}
+
+p {
+  color: rgb(8, 124, 179);
+  font-size: 19px;
+  margin-bottom: 0;
+}
+
+thead {
+  background: linear-gradient(white, #c8c8c8);
+  border: none;
+  box-shadow: 0px 3px 3px #e6e4e4;
+  tr {
+    border: 1px solid rgb(202, 200, 200);
+  }
+}
+
+.table>:not(:first-child) {
+  border-top: none;
+}
+
+form {
+  float: left;
+}
+
+#providers {
+  input {
+    width: 113px;
+  }
+}
+
+.field {
+  margin-bottom: 15px;
+  text-align: right;
+  label {
+    font-weight: bold;
+    float: left;
+    margin-right: 10px;
+  }
+  input {
+    border-radius: 10px;
+  }
+}
+
