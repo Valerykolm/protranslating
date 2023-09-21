@@ -7,7 +7,7 @@
             <caption>
               <div class="table_header">
                 <p><b>Clients</b></p>
-                <button>New client</button>
+                <button @click="openForm($event)">New client</button>
               </div>
               </caption>
         <thead v-if="clients.length > 0">
@@ -43,7 +43,7 @@
       </div>
     </div>
     <!--New client-->
-    <form action="#" class="m-5 p-5">
+    <form v-if="showForm" action="#" class="m-5 p-5 new_form">
       <p><b>New client</b></p>
       <hr />
       <div class="field">
@@ -86,7 +86,7 @@
       </div>
       <hr />
       <div class="new_form_button">
-        <button class="me-2">Cancel</button>
+        <button @click="showForm=false" class="me-2">Cancel</button>
         <button @click="add" type="button">Add Client</button>
       </div>
     </form>
@@ -149,15 +149,16 @@ export default {
   data() {
     return {
       client: "",
+      email: "",
+      phone: "",
+      provider: "",
+      sel: null,
+      showForm: false,
       clients: [
         {name: "Test", email: "test@krfs.com", phone: "305-555-0000", provider: "Provider1, Provider3, Provider5"},
         {name: "Test1", email: "test1@krfs.com", phone: "305-000-5555", provider: "Provider3"},
         {name: "Test2", email: "test2@krfs.com", phone: "305-333-0000", provider: "Provider2, Provider4"}
       ],
-      sel: null,
-      email: "",
-      phone: "",
-      provider: "",
       providers: [
         {id: 1, name: "Provider1"}, 
         {id: 2, name: "Provider2"},
@@ -183,6 +184,11 @@ export default {
       this.email = "";
       this.phone = "";
       this.provider = "";
+    },
+
+    openForm(event) {
+      event.preventDefault()
+      this.showForm = true
     },
 
     addProvider(p) {
