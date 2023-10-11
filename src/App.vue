@@ -4,117 +4,125 @@
     <div class="row-auto justify-content-center">
       <div class="col-md-auto">
         <table class="table table-bordered caption-top">
-            <caption>
-              <div class="table_header">
-                <p><b>Clients</b></p>
-                <button @click="openForm($event)">New client</button>
-              </div>
-              </caption>
-        <thead v-if="clients.length > 0">
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Phone</th>
-            <th scope="col">Providers</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr 
-            v-for="c in clients"
-            :key="c.name"
-          >
-            <td>{{ c.name }}</td>
-            <td>{{ c.email }}</td>
-            <td>{{ c.phone }}</td>
-            <td>{{ c.provider }}</td>
-            <td>
-              <a 
-                @click="sel = c" 
-                href="#"
-              >
-                Edit
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      {{ sel }}
+          <caption>
+            <div class="table_header">
+              <p>Clients</p>
+              <button @click="showForm = true">New client</button>
+              <!--<button @click="showModal = true">Показать модальное окно</button>
+              <new-client v-if="showModal" @close="showModal = false">
+              </new-client>-->
+            </div>
+          </caption>
+          <thead v-if="clients.length > 0">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Providers</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr 
+              v-for="c in clients"
+              :key="c.name"
+            >
+              <td>{{ c.name }}</td>
+              <td>{{ c.email }}</td>
+              <td>{{ c.phone }}</td>
+              <td>{{ c.provider }}</td>
+              <td>
+                <a 
+                  @click="selectedClient = c" 
+                  href="#"
+                >
+                  Edit
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <!--New client-->
-    <form v-if="showForm" action="#" class="m-5 p-5 new_form">
-      <p><b>New client</b></p>
-      <hr />
-      <div class="field">
-        <label for="name">Name:</label>
-        <input v-model="client" id="name" type="text" name="name" />
+    <div v-if="showForm" class="form_mask">
+      <div class="form_wrapper">
+        <form action="#" class="form_container">
+          <p class="form_header">New client</p>
+          <hr />
+          <div class="field">
+            <label for="name">Name:</label>
+            <input v-model="client" id="name" type="text" name="name" />
+          </div>
+          <div class="field">
+            <label for="email">Email:</label>
+            <input v-model="email" id="email" type="text" name="email" />
+          </div>
+          <div class="field">
+            <label for="phone">Phone:</label>
+            <input v-model="phone" id="phone" type="text" name="phone" />
+          </div>
+          <div class="field">
+            <label for="providers">Providers:</label>
+            <input
+              v-model="provider"
+              @keydown.enter = "addNewProvider"
+              id="providers" 
+              type="text"  
+              class="provider_input"
+            />
+            <button @click="addNewProvider" type="button">Add Povider</button>
+          </div>
+          <div 
+            class="providers_block"
+            v-for="p in providers"
+            :key="p.name"
+          >
+            <input 
+              type="checkbox"
+              @click="addProvider(p.name)"    
+              class="me-2"
+            />
+            <label>
+              {{ p.name }} 
+              <i class="icon-edit"></i>
+              <i @click="handleDelete(p)" class="icon-trash"></i>
+            </label>
+          </div>
+          <hr />
+          <div class="new_form_button">
+            <button @click="showForm=false" class="me-2">Cancel</button>
+            <button @click="add" type="button">Add Client</button>
+          </div>
+        </form>
       </div>
-      <div class="field">
-        <label for="email">Email:</label>
-        <input v-model="email" id="email" type="text" name="email" />
-      </div>
-      <div class="field">
-        <label for="phone">Phone:</label>
-        <input v-model="phone" id="phone" type="text" name="phone" />
-      </div>
-      <div class="field">
-        <label for="providers">Providers:</label>
-        <input
-          id="providers" 
-          type="text"  
-          class="provider_input"
-          v-model="checkedProvider"
-        />
-        <button type="button">Add Povider</button>
-      </div>
-      <div 
-        class="providers_block"
-        v-for="p in providers"
-        :key="p.name"
-      >
-        <input 
-          type="checkbox"
-          @click="addProvider(p.name)"    
-          class="me-2"
-        />
-        <label>
-          {{ p.name }} 
-          <i class="icon-edit"></i>
-          <i @click="handleDelete(p)" class="icon-trash"></i>
-        </label>
-      </div>
-      <hr />
-      <div class="new_form_button">
-        <button @click="showForm=false" class="me-2">Cancel</button>
-        <button @click="add" type="button">Add Client</button>
-      </div>
-    </form>
+    </div>
     <!--Edit client-->
-    <form v-if="sel" action="#" class="m-5 p-5">
+    <form v-if="selectedClient" action="#" class="m-5 p-5">
       <p><b>Edit client</b></p>
       <hr />
       <div class="field">
         <label for="name">Name:</label>
-        <input v-model="sel.name" id="name" type="text" name="name" />
+        <input v-model="selectedClient.name" id="name" type="text" name="name" />
       </div>
       <div class="field">
         <label for="email">Email:</label>
-        <input v-model="sel.email" id="email" type="text" name="email" />
+        <input v-model="selectedClient.email" id="email" type="text" name="email" />
       </div>
       <div class="field">
         <label for="phone">Phone:</label>
-        <input v-model="sel.phone" id="phone" type="text" name="phone" />
+        <input v-model="selectedClient.phone" id="phone" type="text" name="phone" />
       </div>
       <div class="field">
         <label for="providers">Providers:</label>
         <input
+          v-model="provider"
+          @keydown.enter = "addNewProvider"
           id="providers" 
           type="text"  
           class="provider_input"
-          v-model="sel.provider"
         />
-        <button>Add Povider</button>
+        <button @click="addNewProvider" type="button">Add Povider</button>
       </div>
       <div 
         class="providers_block"
@@ -125,6 +133,7 @@
           type="checkbox"
           @click="addProvider(p.name)"    
           class="me-2"
+          v-model="selectedClient.provider"
         />
         <label>
           {{ p.name }} 
@@ -135,7 +144,7 @@
       <hr />
       <div class="new_form_button">
         <button class="me-4 delete">Delete Client</button>
-        <button class="me-2">Cancel</button>
+        <button @click="showForm=false" class="me-2">Cancel</button>
         <button @click="add" type="button">Save Client</button>
       </div>
     </form>
@@ -143,6 +152,7 @@
 </template>
 
 <script>
+
 export default {
   name: "App",
 
@@ -152,10 +162,13 @@ export default {
       email: "",
       phone: "",
       provider: "",
-      sel: null,
+      id: 5,
       showForm: false,
+
+      selectedClient: null,
+
       clients: [
-        {name: "Test", email: "test@krfs.com", phone: "305-555-0000", provider: "Provider1, Provider3, Provider5"},
+        {name: "Test", email: "test@krfs.com", phone: "305-555-0000", provider: "Provider1, Provider2, Provider3"},
         {name: "Test1", email: "test1@krfs.com", phone: "305-000-5555", provider: "Provider3"},
         {name: "Test2", email: "test2@krfs.com", phone: "305-333-0000", provider: "Provider2, Provider4"}
       ],
@@ -186,14 +199,23 @@ export default {
       this.provider = "";
     },
 
-    openForm(event) {
-      event.preventDefault()
-      this.showForm = true
-    },
-
     addProvider(p) {
       this.checkedProvider.push(p); 
-      this.provider = "" ;
+      this.provider = "";
+    },
+
+    addNewProvider() {
+      const newProvider = {
+        id: this.id + 1,
+        name: this.provider,
+      }
+
+      this.providers.push(newProvider);
+      this.provider = "";
+    },
+
+    showProvider() {
+      this.checkedProvider?.name;
     },
 
     handleDelete(providerToRemove) {
