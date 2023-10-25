@@ -6,8 +6,8 @@
 }
 
 button {
-  border-radius: 10px;
-  padding: 4px 15px;
+  border-radius: 5px;
+  padding: 2px 10px;
   background: linear-gradient(white, #dfdede);
   border: 1px solid $border-color;
   font-size: 14px;
@@ -43,30 +43,56 @@ form {
   border: 1px solid $border-color;
 }
 
-.provider_input {
-  margin-right: 10px;
-}
-
 .providers_block {
-  margin-left: 90px;
+  margin: 0 10em 2em 11em;
+  padding: 0.15em 0.5em;
+  border: 1px solid $border-color;
+  border-radius: 5px;
 }
 
 .field {
-  margin: 0 50px 10px;
   display: flex;
   justify-content: flex-end;
+  text-align: right;
+  padding: .5em 3em;
   label {
     font-weight: bold;
-    margin-right: 10px;
+    padding-right: 1em;
+    flex: 2;
   }
   input {
     border-radius: 5px;
     border: 1px solid $border-color;
+    flex: 5;
+  }
+}
+
+.field_providers {
+  padding: .5em 3em .5em 4.75em;
+  display: flex;
+  justify-content: flex-end;
+  text-align: right;
+  label {
+    font-weight: bold;
+    padding-right: 1em;
+    flex: 1;
+  }
+  input {
+    border-radius: 5px;
+    border: 1px solid $border-color;
+    flex: 2;
+    margin-right: .5em;
+    width: 2.5em;
+  }
+  button {
     flex: 1;
   }
 }
 
 .new_form_button {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0.5em 0.5em;
   .delete {
     background: linear-gradient(red, #900e0e);
     color: white;
@@ -108,7 +134,7 @@ form {
 }
 
 hr {
-  margin: 5px 0 15px;
+  margin: 0.5em 0;
 }
 
 
