@@ -27,7 +27,7 @@
               <td>{{ c.name }}</td>
               <td>{{ c.email }}</td>
               <td>{{ c.phone }}</td>
-              <td>{{ convertedToString(c) }}</td>
+              <td>{{ providerToSring(c) }}</td>
               <td>
                 <a 
                   @click="selectedClient = c" 
@@ -83,7 +83,9 @@
                 class="me-2"
                 :id="p.id"
               />
-              <label :for="p.id">
+              <label
+              :for="p.id"
+              >
                 {{ p.name }} 
                 <i class="icon-edit"></i>
                 <i @click="handleDelete(p)" class="icon-trash"></i>
@@ -141,7 +143,9 @@
                 class="me-2"
                 :id="p.id"
               />
-              <label :for="p.id">
+              <label
+                :for="p.id"
+              >
                 {{ p.name }} 
                 <i class="icon-edit"></i>
                 <i @click="handleDelete(p)" class="icon-trash"></i>
@@ -178,9 +182,9 @@ export default {
       selectedClient: null,
 
       clients: [
-        {name: "Test", email: "test@krfs.com", phone: "305-555-0000", provider: [1, 3, 5], providerToAdd: [1, 3, 5]},
-        {name: "Test1", email: "test1@krfs.com", phone: "305-000-5555", provider: [3], providerToAdd: [3]},
-        {name: "Test2", email: "test2@krfs.com", phone: "305-333-0000", provider: [2, 4], providerToAdd: [2, 4]}
+        {name: "Test", email: "test@krfs.com", phone: "305-555-0000", provider: [1, 3, 5]},
+        {name: "Test1", email: "test1@krfs.com", phone: "305-000-5555", provider: [3]},
+        {name: "Test2", email: "test2@krfs.com", phone: "305-333-0000", provider: [2, 4]}
       ],
       providers: [
         {id: 1, name: "Provider1"}, 
@@ -190,6 +194,7 @@ export default {
         {id: 5, name: "Provider5"},
       ],
       checkedProvider: [],
+      checkedEditProvider: [],
     };
   },
 
@@ -237,10 +242,9 @@ export default {
       this.clients = this.clients.filter(c => c !== clientToRemove);
       this.selectedClient = null;
     },
-
-    convertedToString(client) {
-      const currentProvider = client.provider.map((idProvider) => this.providers.filter(p => p.id === idProvider)[0]?.name);
-      return currentProvider.join(', ');
+    providerToSring(client){
+      const providerToString = client.provider.map((pId) => this.providers.filter(p => p.id === pId)[0].name);
+      return providerToString.join(', ');
     }
   }
 };
