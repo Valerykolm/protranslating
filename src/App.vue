@@ -92,7 +92,7 @@
           </div>
           <hr />
           <div class="new_form_button">
-            <button @click="showForm=false" class="me-2">Cancel</button>
+            <button @click="cleanForm" class="me-2">Cancel</button>
             <button @click="add" type="button">Add Client</button>
           </div>
         </form>
@@ -104,7 +104,6 @@
         <form  action="#" class="form_container">
           <p class="form_header">Edit client</p>
           <hr />
-          {{ selectedClient }}
           <div class="field">
             <label for="name">Name:</label>
             <input v-model="selectedClient.name" id="name" type="text" name="name" />
@@ -151,7 +150,7 @@
           <hr />
           <div class="new_form_button">
             <button @click="deleteClient(selectedClient)" class="me-4 delete">Delete Client</button>
-            <button @click="selectedClient = null" class="me-2">Cancel</button>
+            <button @click="cancelToEdit" class="me-2">Cancel</button>
             <button @click="save">Save Client</button>
           </div>
         </form>
@@ -178,9 +177,9 @@ export default {
       selectedClient: null,
 
       clients: [
-        {name: "Test", email: "test@krfs.com", phone: "305-555-0000", provider: [1, 3, 5], providerToAdd: [1, 3, 5]},
-        {name: "Test1", email: "test1@krfs.com", phone: "305-000-5555", provider: [3], providerToAdd: [3]},
-        {name: "Test2", email: "test2@krfs.com", phone: "305-333-0000", provider: [2, 4], providerToAdd: [2, 4]}
+        {name: "Test", nameToAdd: "Test", email: "test@krfs.com", emailToAdd: "test@krfs.com", phone: "305-555-0000", phoneToAdd: "305-555-0000", provider: [1, 3, 5], providerToAdd: [1, 3, 5]},
+        {name: "Test1", nameToAdd: "Test1", email: "test1@krfs.com", emailToAdd: "test1@krfs.com", phone: "305-000-5555", phoneToAdd: "305-000-5555", provider: [3], providerToAdd: [3]},
+        {name: "Test2", nameToAdd: "Test2", email: "test2@krfs.com", emailToAdd: "test2@krfs.com", phone: "305-333-0000", phoneToAdd: "305-333-0000", provider: [2, 4], providerToAdd: [2, 4]}
       ],
       providers: [
         {id: 1, name: "Provider1"}, 
@@ -195,10 +194,13 @@ export default {
 
   methods: {
     add() {
-      const newClient = {
-        name: this.client, 
-        email: this.email, 
-        phone: this.phone, 
+     const newClient = {
+        name: this.client,
+        nameToAdd: this.client, 
+        email: this.email,
+        emailToAdd: this.email, 
+        phone: this.phone,
+        phoneToAdd: this.phone, 
         provider: this.checkedProvider,
         providerToAdd: this.checkedProvider,
       };
@@ -215,6 +217,9 @@ export default {
 
     save() {
       this.selectedClient.provider = this.selectedClient.providerToAdd;
+      this.selectedClient.nameToAdd = this.selectedClient.name;
+      this.selectedClient.emailToAdd = this.selectedClient.email;
+      this.selectedClient.phoneToAdd = this.selectedClient.phone;
 
       this.selectedClient = null;
     },
@@ -241,7 +246,26 @@ export default {
     convertedToString(client) {
       const currentProvider = client.provider.map((idProvider) => this.providers.filter(p => p.id === idProvider)[0]?.name);
       return currentProvider.join(', ');
-    }
+    },
+
+    cancelToEdit() {
+      this.selectedClient.name = this.selectedClient.nameToAdd;
+      this.selectedClient.email = this.selectedClient.emailToAdd;
+      this.selectedClient.phone = this.selectedClient.phoneToAdd;
+      this.selectedClient.providerToAdd = this.selectedClient.provider;
+
+      this.selectedClient = null;
+    },
+
+    cleanForm() {
+      this.client = "";
+      this.email = "";
+      this.phone = "";
+      this.provider = [];
+
+      this.showForm = false;
+      this.checkedProvider = [];
+    },
   }
 };
 </script>
