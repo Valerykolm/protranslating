@@ -49,15 +49,15 @@
           <hr />
           <div class="field">
             <label for="name">Name:</label>
-            <input v-model="client" id="name" type="text" name="name" />
+            <input v-model="client" @keydown.enter="add" id="name" type="text" name="name" />
           </div>
           <div class="field">
             <label for="email">Email:</label>
-            <input v-model="email" id="email" type="text" name="email" />
+            <input v-model="email" @keydown.enter="add" id="email" type="text" name="email" />
           </div>
           <div class="field">
             <label for="phone">Phone:</label>
-            <input v-model="phone" id="phone" type="text" name="phone" />
+            <input v-model="phone" @keydown.enter="add" id="phone" type="text" name="phone" />
           </div>
           <div class="field_providers">
             <label for="providers">Providers:</label>
@@ -91,7 +91,7 @@
             </div>
           </div>
           <hr />
-          <div class="new_form_button">
+          <div class="add_buttons">
             <button @click="cleanForm" class="me-2">Cancel</button>
             <button @click="add" type="button">Add Client</button>
           </div>
@@ -106,15 +106,15 @@
           <hr />
           <div class="field">
             <label for="name">Name:</label>
-            <input v-model="selectedClient.name" id="name" type="text" name="name" />
+            <input v-model="selectedClient.name" @keydown.enter="save" id="name" type="text" name="name" />
           </div>
           <div class="field">
             <label for="email">Email:</label>
-            <input v-model="selectedClient.email" id="email" type="text" name="email" />
+            <input v-model="selectedClient.email" @keydown.enter="save" id="email" type="text" name="email" />
           </div>
           <div class="field">
             <label for="phone">Phone:</label>
-            <input v-model="selectedClient.phone" id="phone" type="text" name="phone" />
+            <input v-model="selectedClient.phone" @keydown.enter="save" id="phone" type="text" name="phone" />
           </div>
           <div class="field_providers">
             <label for="providers">Providers:</label>
@@ -150,8 +150,10 @@
           <hr />
           <div class="new_form_button">
             <button @click="deleteClient(selectedClient)" class="me-4 delete">Delete Client</button>
-            <button @click="cancelToEdit" class="me-2">Cancel</button>
-            <button @click="save">Save Client</button>
+            <div>
+              <button @click="cancelToEdit" class="me-2">Cancel</button>
+              <button @click="save">Save Client</button>
+            </div>
           </div>
         </form>
       </div>
@@ -170,6 +172,7 @@ export default {
       email: "",
       phone: "",
       provider: [],
+      checkedProvider: [],
 
       id: 5,
       showForm: false,
@@ -188,7 +191,6 @@ export default {
         {id: 4, name: "Provider4"},
         {id: 5, name: "Provider5"},
       ],
-      checkedProvider: [],
     };
   },
 
@@ -206,13 +208,8 @@ export default {
       };
 
       this.clients.push(newClient);
-      this.client = "";
-      this.email = "";
-      this.phone = "";
-      this.provider = [];
 
-      this.showForm = false;
-      this.checkedProvider = [];
+      this.cleanForm();
     },
 
     save() {

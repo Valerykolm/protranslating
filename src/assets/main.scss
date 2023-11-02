@@ -91,12 +91,18 @@ form {
 
 .new_form_button {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin: 0 0.5em 0.5em;
   .delete {
     background: linear-gradient(red, #900e0e);
     color: white;
   }
+}
+
+.add_buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0.5em 0.5em;
 }
 
 /*Modal window*/
