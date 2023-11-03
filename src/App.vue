@@ -7,6 +7,7 @@
           <caption>
             <div class="table_header">
               <p>Clients</p>
+              <div>Filter: <input v-model="filter" /></div>
               <button @click="showForm = true">New client</button>
             </div>
           </caption>
@@ -21,7 +22,7 @@
           </thead>
           <tbody>
             <tr 
-              v-for="c in clients"
+              v-for="c in filteredClients()"
               :key="c.name"
             >
               <td>{{ c.name }}</td>
@@ -174,6 +175,8 @@ export default {
       provider: [],
       checkedProvider: [],
 
+      filter: "",
+
       id: 5,
       showForm: false,
 
@@ -210,6 +213,10 @@ export default {
       this.clients.push(newClient);
 
       this.cleanForm();
+    },
+
+    filteredClients() {
+      return this.clients.filter(client => client.name.includes(this.filter));
     },
 
     save() {
